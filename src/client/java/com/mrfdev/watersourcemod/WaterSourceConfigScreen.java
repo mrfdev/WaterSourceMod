@@ -22,6 +22,8 @@ public final class WaterSourceConfigScreen extends Screen {
     private static final int PAIRED_BUTTON_WIDTH = (BUTTON_WIDTH - PAIR_GAP) / 2;
 
     private final Screen parent;
+    private CycleButton<Integer> sourceColorButton;
+    private CycleButton<Integer> flowingColorButton;
 
     public WaterSourceConfigScreen(Screen parent) {
         super(Component.translatable("screen.watersourcemod.settings"));
@@ -52,10 +54,10 @@ public final class WaterSourceConfigScreen extends Screen {
                 integerValues(WaterSourceConfig.MIN_RADIUS, WaterSourceConfig.MAX_RADIUS),
                 value -> WaterSourceModClient.updateConfig(c -> c.setChunkRadius(value)));
         int colorY = top + ROW_GAP * 3;
-        addColor(right, colorY, PAIRED_BUTTON_WIDTH, "source_color", config.getSourceColor(),
+        sourceColorButton = addColor(right, colorY, PAIRED_BUTTON_WIDTH, "source_color", config.getSourceColor(),
                 new Integer[]{0xFFD21F, 0xFFF4F7FF, 0xFF8A00},
                 value -> WaterSourceModClient.updateConfig(c -> c.setSourceColor(value)));
-        addColor(right + PAIRED_BUTTON_WIDTH + PAIR_GAP, colorY, PAIRED_BUTTON_WIDTH,
+        flowingColorButton = addColor(right + PAIRED_BUTTON_WIDTH + PAIR_GAP, colorY, PAIRED_BUTTON_WIDTH,
                 "flowing_color", config.getFlowingColor(),
                 new Integer[]{0x00D9FF, 0x35FF9A, 0xB56CFF},
                 value -> WaterSourceModClient.updateConfig(c -> c.setFlowingColor(value)));
@@ -110,8 +112,8 @@ public final class WaterSourceConfigScreen extends Screen {
         addRenderableWidget(button);
     }
 
-    private void addColor(int x, int y, int width, String key, int current, Integer[] values,
-                          java.util.function.Consumer<Integer> update) {
+    private CycleButton<Integer> addColor(int x, int y, int width, String key, int current, Integer[] values,
+                                          java.util.function.Consumer<Integer> update) {
         CycleButton<Integer> button = CycleButton
                 .<Integer>builder(value -> Component.literal(String.format("#%06X", value & 0xFFFFFF)), current)
                 .withValues(Arrays.asList(values))
@@ -119,6 +121,7 @@ public final class WaterSourceConfigScreen extends Screen {
                         (ignored, value) -> update.accept(value));
         button.setTooltip(Tooltip.create(Component.translatable("watersourcemod.config." + key + ".tooltip")));
         addRenderableWidget(button);
+        return button;
     }
 
     private void addInteger(int x, int y, String key, int current, List<Integer> values, java.util.function.Consumer<Integer> update) {
@@ -160,8 +163,23 @@ public final class WaterSourceConfigScreen extends Screen {
     @Override
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
         super.extractRenderState(graphics, mouseX, mouseY, partialTick);
+        extractColorSwatch(graphics, sourceColorButton);
+        extractColorSwatch(graphics, flowingColorButton);
         graphics.centeredText(font, title, width / 2, 12, 0xFFFFFFFF);
         graphics.centeredText(font, Component.translatable("watersourcemod.config.subtitle"), width / 2, 22, 0xFFBBD7EA);
+    }
+
+    private static void extractColorSwatch(GuiGraphicsExtractor graphics, CycleButton<Integer> button) {
+        if (button == null || !button.visible) {
+            return;
+        }
+
+        int left = button.getX() + 3;
+        int top = button.getY() + 4;
+        int right = left + 4;
+        int bottom = button.getBottom() - 4;
+        graphics.fill(left - 1, top - 1, right + 1, bottom + 1, 0xFF101010);
+        graphics.fill(left, top, right, bottom, 0xFF000000 | (button.getValue() & 0xFFFFFF));
     }
 
     @Override

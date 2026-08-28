@@ -17,7 +17,8 @@ License: MIT
 - Default scan radius is 1 chunk, covering the current chunk plus one chunk
   in every direction, or 3x3 chunks.
 - Configure a larger radius, including radius 2 for 5x5 chunks.
-- Use distinct high-contrast source and flowing-water marker colors.
+- Use distinct high-contrast source and flowing-water marker colors, with a
+  live color swatch inside each settings button.
 - Choose a marker style, slider-controlled opacity and outline thickness, pulse
   animation, and optional HUD labels/legend.
 - Keep the optional status HUD at the top center so it avoids common corner overlays.
