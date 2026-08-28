@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "watersourcemod",
+  "version": "${version}",
+  "name": "1MB Water Source",
+  "description": "A client-only accessibility overlay that distinguishes water source blocks from flowing water.",
+  "environment": "client",
+  "authors": [
+    "mrfloris"
+  ],
+  "contact": {
+    "homepage": "https://github.com/mrfdev/WaterSourceMod",
+    "sources": "https://github.com/mrfdev/WaterSourceMod",
+    "issues": "https://github.com/mrfdev/WaterSourceMod/issues"
+  },
+  "license": "MIT",
+  "icon": "assets/watersourcemod/icon.png",
+  "entrypoints": {
+    "client": [
+      "com.mrfdev.watersourcemod.WaterSourceModClient"
+    ],
+    "modmenu": [
+      "com.mrfdev.watersourcemod.WaterSourceModMenu"
+    ]
+  },
+  "mixins": [
+    {
+      "config": "watersourcemod.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.3",
+    "minecraft": "~26.2",
+    "java": ">=25",
+    "fabric-api": ">=0.154.2"
+  },
+  "suggests": {
+    "modmenu": ">=20.0.1"
+  }
+}

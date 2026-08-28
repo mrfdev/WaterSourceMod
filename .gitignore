@@ -1,0 +1,32 @@
+# Gradle and generated build output
+.gradle/
+build/
+out/
+run/
+
+# Local release artifacts. JARs are intentionally never committed.
+*.jar
+releases/**/*.jar
+!gradle/wrapper/gradle-wrapper.jar
+
+# IDE/editor files
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+
+# Local secrets and machine-specific configuration
+.env
+.env.*
+*.local
+config/
+
+# Keep the release archive directory structure visible in Git.
+!releases/.gitkeep
+!releases/archive/.gitkeep
