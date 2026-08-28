@@ -9,6 +9,15 @@ Repository: [github.com/mrfdev/WaterSourceMod](https://github.com/mrfdev/WaterSo
 Issues: [github.com/mrfdev/WaterSourceMod/issues](https://github.com/mrfdev/WaterSourceMod/issues)  
 License: MIT
 
+## Release status
+
+**Public Beta 1** is version `1.0.0`, build `012`. This exact build was
+user-tested and confirmed working on Minecraft 26.2 on August 28, 2026.
+
+[Download Beta 1](https://github.com/mrfdev/WaterSourceMod/releases/tag/v1.0.0-beta.1) ·
+[Beta 1 release notes](docs/releases/v1.0.0-beta.1.md) ·
+[Changelog](CHANGELOG.md)
+
 ## Features
 
 - Toggle the visualization with `F9` (rebindable in Minecraft Controls).
@@ -35,6 +44,7 @@ License: MIT
 
 | Item | Target |
 | --- | --- |
+| Release status | Public Beta 1, user-tested on Minecraft 26.2 |
 | Minecraft | 26.2 |
 | Mod loader | Fabric Loader 0.19.3 or newer in the 26.2 line |
 | API | Fabric API 0.154.2+26.2 or newer compatible 26.2 build |
@@ -79,7 +89,9 @@ setting.
 1. Install Fabric Loader for Minecraft 26.2 and Java 25.
 2. Install a compatible Fabric API build.
 3. Optionally install Mod Menu for convenient menu access.
-4. Put the latest `1MB-WaterSource-v1.0.0-<build>.jar` in the client `mods/` folder.
+4. Download `1MB-WaterSource-v1.0.0-012.jar` from the
+   [Beta 1 release](https://github.com/mrfdev/WaterSourceMod/releases/tag/v1.0.0-beta.1)
+   and put it in the client `mods/` folder.
 5. Do not install this JAR on the Paper server.
 6. Start the client, press `F9` when needed, and use `F10` to adjust options.
 
@@ -123,9 +135,10 @@ and copy the new JAR to the client `mods/` folder after removing only the
 older WaterSource JAR. Build numbers start at `001` and increase to `002`,
 `003`, and so on.
 
-Release JARs are ignored by Git intentionally. Source, documentation, and
-build metadata are public; local binaries are kept out of the repository until
-the maintainer explicitly decides to publish a beta/release asset.
+Release JARs are ignored by Git intentionally and are never committed to the
+source tree. Source, documentation, and build metadata are public. Explicitly
+approved public binaries, beginning with Beta 1 build `012`, are attached to
+GitHub Releases as downloadable assets.
 
 ## Privacy and security
 

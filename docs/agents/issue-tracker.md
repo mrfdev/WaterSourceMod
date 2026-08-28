@@ -6,6 +6,8 @@ GitHub Issues is the project issue tracker:
 
 - Repository: `https://github.com/mrfdev/WaterSourceMod`
 - Issues: `https://github.com/mrfdev/WaterSourceMod/issues`
+- Current public test release: `v1.0.0 Beta 1`, build `012`, tested on
+  Minecraft 26.2
 
 Use the `gh` CLI for issue operations when it is available and authenticated.
 The issue tracker is for implementation work, bugs, accessibility feedback,
