@@ -35,18 +35,18 @@ public final class WaterSourceConfigScreen extends Screen {
         int top = 34;
 
         addBoolean(left, top, "show_sources", config.isShowSources(), value -> WaterSourceModClient.updateConfig(c -> c.setShowSources(value)));
-        addBoolean(left, top + ROW_GAP, "show_flowing", config.isShowFlowing(), value -> WaterSourceModClient.updateConfig(c -> c.setShowFlowing(value)));
-        addBoolean(left, top + ROW_GAP * 2, "include_waterlogged", config.isIncludeWaterloggedSources(), value -> WaterSourceModClient.updateConfig(c -> c.setIncludeWaterloggedSources(value)));
-        addBoolean(left, top + ROW_GAP * 3, "through_walls", config.isThroughWalls(), value -> WaterSourceModClient.updateConfig(c -> c.setThroughWalls(value)));
-        addBoolean(left, top + ROW_GAP * 4, "show_labels", config.isShowLabels(), value -> WaterSourceModClient.updateConfig(c -> c.setShowLabels(value)));
-        addBoolean(left, top + ROW_GAP * 5, "show_status_hud", config.isShowStatusHud(), value -> WaterSourceModClient.updateConfig(c -> c.setShowStatusHud(value)));
+        addBoolean(left, top + ROW_GAP, "include_waterlogged", config.isIncludeWaterloggedSources(), value -> WaterSourceModClient.updateConfig(c -> c.setIncludeWaterloggedSources(value)));
+        addBoolean(left, top + ROW_GAP * 2, "through_walls", config.isThroughWalls(), value -> WaterSourceModClient.updateConfig(c -> c.setThroughWalls(value)));
+        addBoolean(left, top + ROW_GAP * 3, "show_labels", config.isShowLabels(), value -> WaterSourceModClient.updateConfig(c -> c.setShowLabels(value)));
+        addBoolean(left, top + ROW_GAP * 4, "show_status_hud", config.isShowStatusHud(), value -> WaterSourceModClient.updateConfig(c -> c.setShowStatusHud(value)));
 
-        addBoolean(right, top, "pulse", config.isPulse(), value -> WaterSourceModClient.updateConfig(c -> c.setPulse(value)));
-        addMarkerStyle(right, top + ROW_GAP, config);
-        addInteger(right, top + ROW_GAP * 2, "chunk_radius", config.getChunkRadius(),
+        addBoolean(right, top, "show_flowing", config.isShowFlowing(), value -> WaterSourceModClient.updateConfig(c -> c.setShowFlowing(value)));
+        addBoolean(right, top + ROW_GAP, "pulse", config.isPulse(), value -> WaterSourceModClient.updateConfig(c -> c.setPulse(value)));
+        addMarkerStyle(right, top + ROW_GAP * 2, config);
+        addInteger(right, top + ROW_GAP * 3, "chunk_radius", config.getChunkRadius(),
                 integerValues(WaterSourceConfig.MIN_RADIUS, WaterSourceConfig.MAX_RADIUS),
                 value -> WaterSourceModClient.updateConfig(c -> c.setChunkRadius(value)));
-        int colorY = top + ROW_GAP * 3;
+        int colorY = top + ROW_GAP * 4;
         int colorWidth = Math.max(1, Math.min(BUTTON_WIDTH, (width - right - 8 - COLOR_GAP) / 2));
         addColor(right, colorY, colorWidth, "source_color", config.getSourceColor(),
                 new Integer[]{0xFFD21F, 0xFFF4F7FF, 0xFF8A00},
@@ -54,14 +54,14 @@ public final class WaterSourceConfigScreen extends Screen {
         addColor(right + colorWidth + COLOR_GAP, colorY, colorWidth, "flowing_color", config.getFlowingColor(),
                 new Integer[]{0x00D9FF, 0x35FF9A, 0xB56CFF},
                 value -> WaterSourceModClient.updateConfig(c -> c.setFlowingColor(value)));
-        addSlider(right, top + ROW_GAP * 4, "opacity", config.getOpacityPercent(), 10, 100,
+        addSlider(right, top + ROW_GAP * 5, "opacity", config.getOpacityPercent(), 10, 100,
                 value -> WaterSourceModClient.updateConfig(c -> c.setOpacityPercent(value)));
-        addSlider(right, top + ROW_GAP * 5, "outline_thickness", config.getOutlineThickness(), 1, 6,
+        addSlider(right, top + ROW_GAP * 6, "outline_thickness", config.getOutlineThickness(), 1, 6,
                 value -> WaterSourceModClient.updateConfig(c -> c.setOutlineThickness(value)));
-        addSlider(right, top + ROW_GAP * 6, "max_markers", config.getMaxMarkers(), 512, 16_384,
+        addSlider(right, top + ROW_GAP * 7, "max_markers", config.getMaxMarkers(), 512, 16_384,
                 value -> WaterSourceModClient.updateConfig(c -> c.setMaxMarkers(value)));
 
-        int footerY = Math.max(height - 30, top + ROW_GAP * 7 + 4);
+        int footerY = Math.max(height - 30, top + ROW_GAP * 8 + 4);
         addRenderableWidget(Button.builder(
                         Component.translatable("watersourcemod.config.reset"),
                         button -> {
