@@ -83,10 +83,10 @@ public final class WaterSourceModClient implements ClientModInitializer {
         }
 
         WaterSourceScanner.ScanStatus status = scanner.status();
-        int x = 8;
+        int width = 214;
+        int x = (graphics.guiWidth() - width) / 2;
         int y = 8;
         int height = 28 + (status.markerLimitReached() ? 12 : 0) + (config.isShowLabels() ? 20 : 0);
-        int width = 214;
         graphics.fill(x, y, x + width, y + height, 0xB0101724);
         graphics.outline(x, y, width, height, 0xE0FFFFFF);
 

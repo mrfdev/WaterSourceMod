@@ -3,7 +3,6 @@ package com.mrfdev.watersourcemod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -23,7 +22,7 @@ public final class WaterSourceScanner {
     private final Deque<ChunkWork> pendingChunks = new ArrayDeque<>();
     private final List<WaterMarker> sourceMarkers = new ArrayList<>();
     private final List<WaterMarker> flowingMarkers = new ArrayList<>();
-    private volatile List<WaterMarker> markerSnapshot = List.of();
+    private final WaterMarkerSnapshot markerSnapshot = new WaterMarkerSnapshot();
     private volatile ScanStatus status = ScanStatus.idle();
 
     private ClientLevel scannedLevel;
@@ -122,7 +121,7 @@ public final class WaterSourceScanner {
     }
 
     public List<WaterMarker> markerSnapshot() {
-        return markerSnapshot;
+        return markerSnapshot.current();
     }
 
     public ScanStatus status() {
@@ -133,7 +132,7 @@ public final class WaterSourceScanner {
         pendingChunks.clear();
         sourceMarkers.clear();
         flowingMarkers.clear();
-        markerSnapshot = List.of();
+        markerSnapshot.beginScan();
         processedBlocks = 0;
         loadedChunkCount = 0;
         markerLimitReachedDuringScan = false;
@@ -168,7 +167,7 @@ public final class WaterSourceScanner {
         int remaining = maxMarkers - combined.size();
         int flowingCount = Math.min(flowingMarkers.size(), remaining);
         combined.addAll(flowingMarkers.subList(0, flowingCount));
-        markerSnapshot = List.copyOf(combined);
+        markerSnapshot.publish(combined);
         boolean markerLimitReached = markerLimitReachedDuringScan
                 || sourceMarkers.size() + flowingMarkers.size() > maxMarkers;
         status = new ScanStatus(
@@ -188,7 +187,7 @@ public final class WaterSourceScanner {
         activeChunk = null;
         sourceMarkers.clear();
         flowingMarkers.clear();
-        markerSnapshot = List.of();
+        markerSnapshot.clear();
         status = ScanStatus.idle();
         scanRequested = false;
         scannedLevel = null;

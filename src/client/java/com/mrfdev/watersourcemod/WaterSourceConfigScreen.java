@@ -1,6 +1,8 @@
 package com.mrfdev.watersourcemod;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.OptionInstance;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
@@ -49,9 +51,7 @@ public final class WaterSourceConfigScreen extends Screen {
         addColor(right, top + ROW_GAP * 4, "flowing_color", config.getFlowingColor(),
                 new Integer[]{0x00D9FF, 0x35FF9A, 0xB56CFF},
                 value -> WaterSourceModClient.updateConfig(c -> c.setFlowingColor(value)));
-        addInteger(right, top + ROW_GAP * 5, "opacity", config.getOpacityPercent(),
-                integerValues(30, 100, 10),
-                value -> WaterSourceModClient.updateConfig(c -> c.setOpacityPercent(value)));
+        addOpacitySlider(right, top + ROW_GAP * 5, config.getOpacityPercent());
         addInteger(right, top + ROW_GAP * 6, "outline_thickness", config.getOutlineThickness(),
                 integerValues(1, 6),
                 value -> WaterSourceModClient.updateConfig(c -> c.setOutlineThickness(value)));
@@ -115,6 +115,18 @@ public final class WaterSourceConfigScreen extends Screen {
                         (ignored, value) -> update.accept(value));
         button.setTooltip(Tooltip.create(Component.translatable("watersourcemod.config." + key + ".tooltip")));
         addRenderableWidget(button);
+    }
+
+    private void addOpacitySlider(int x, int y, int current) {
+        OptionInstance<Integer> opacity = new OptionInstance<>(
+                "watersourcemod.config.opacity",
+                OptionInstance.cachedConstantTooltip(Component.translatable("watersourcemod.config.opacity.tooltip")),
+                (caption, value) -> Component.translatable("watersourcemod.config.opacity.value", value),
+                new OptionInstance.IntRange(10, 100),
+                current,
+                value -> WaterSourceModClient.updateConfig(c -> c.setOpacityPercent(value)));
+        AbstractWidget slider = opacity.createButton(minecraft.options, x, y, BUTTON_WIDTH);
+        addRenderableWidget(slider);
     }
 
     private static List<Integer> integerValues(int min, int max) {

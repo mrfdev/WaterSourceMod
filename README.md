@@ -18,8 +18,9 @@ License: MIT
   in every direction, or 3x3 chunks.
 - Configure a larger radius, including radius 2 for 5x5 chunks.
 - Use distinct high-contrast source and flowing-water marker colors.
-- Choose a marker style, opacity, outline thickness, pulse animation, and
+- Choose a marker style, slider-controlled opacity, outline thickness, pulse animation, and
   optional HUD labels/legend.
+- Keep the optional status HUD at the top center so it avoids common corner overlays.
 - Include or exclude waterlogged source blocks.
 - Scan incrementally, only in client-loaded chunks, across the full loaded
   vertical build range.
@@ -72,7 +73,7 @@ setting.
 1. Install Fabric Loader for Minecraft 26.2 and Java 25.
 2. Install a compatible Fabric API build.
 3. Optionally install Mod Menu for convenient menu access.
-4. Put `1MB-WaterSource-v1.0.0-001.jar` in the client `mods/` folder.
+4. Put the latest `1MB-WaterSource-v1.0.0-<build>.jar` in the client `mods/` folder.
 5. Do not install this JAR on the Paper server.
 6. Start the client, press `F9` when needed, and use `F10` to adjust options.
 
@@ -91,7 +92,7 @@ included Gradle wrapper is the reproducible entry point:
 The client JAR is written to:
 
 ```text
-build/libs/1MB-WaterSource-v1.0.0-001.jar
+build/libs/1MB-WaterSource-v1.0.0-<build>.jar
 ```
 
 To run the pure configuration tests:
