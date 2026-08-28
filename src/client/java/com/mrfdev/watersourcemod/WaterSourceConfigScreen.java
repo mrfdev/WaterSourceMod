@@ -55,8 +55,7 @@ public final class WaterSourceConfigScreen extends Screen {
                 value -> WaterSourceModClient.updateConfig(c -> c.setOpacityPercent(value)));
         addSlider(right, top + ROW_GAP * 6, "outline_thickness", config.getOutlineThickness(), 1, 6,
                 value -> WaterSourceModClient.updateConfig(c -> c.setOutlineThickness(value)));
-        addInteger(right, top + ROW_GAP * 7, "max_markers", config.getMaxMarkers(),
-                Arrays.asList(512, 1024, 2048, 4096, 8192, 16384),
+        addSlider(right, top + ROW_GAP * 7, "max_markers", config.getMaxMarkers(), 512, 16_384,
                 value -> WaterSourceModClient.updateConfig(c -> c.setMaxMarkers(value)));
 
         int footerY = Math.max(height - 30, top + ROW_GAP * 8 + 4);

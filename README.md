@@ -60,6 +60,7 @@ The defaults are intentionally conservative:
 | Pulse | On | Gently animate marker emphasis |
 | Opacity | 82% | Slide left or right to control marker transparency |
 | Outline thickness | 2 | Slide left or right to control marker border thickness, from 1 to 6 |
+| Marker limit | 4096 | Slide left or right to retain between 512 and 16,384 markers per scan |
 
 All visible settings include explanatory tooltips. Minecraft's Controls menu
 can change the key bindings. The built-in screen is available without Mod

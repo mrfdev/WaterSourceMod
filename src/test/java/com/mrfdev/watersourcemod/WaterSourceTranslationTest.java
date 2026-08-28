@@ -23,6 +23,11 @@ class WaterSourceTranslationTest {
         assertEquals("Outline thickness: 3", render("watersourcemod.config.outline_thickness.value", 3));
     }
 
+    @Test
+    void markerLimitSliderCaptionRendersItsValue() throws Exception {
+        assertEquals("Marker limit: 2048", render("watersourcemod.config.max_markers.value", 2048));
+    }
+
     private String render(String key, Object value) throws Exception {
         String template;
         try (Reader reader = new InputStreamReader(

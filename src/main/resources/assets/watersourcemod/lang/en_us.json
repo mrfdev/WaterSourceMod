@@ -34,6 +34,7 @@
   "watersourcemod.config.outline_thickness.value": "Outline thickness: %1$s",
   "watersourcemod.config.outline_thickness.tooltip": "Controls the dark contrast border around each marker.",
   "watersourcemod.config.max_markers": "Marker limit",
+  "watersourcemod.config.max_markers.value": "Marker limit: %1$s",
   "watersourcemod.config.max_markers.tooltip": "Maximum markers retained per scan. Sources are kept before flowing markers when the limit is reached.",
   "watersourcemod.config.reset": "Reset defaults",
   "watersourcemod.config.reset.tooltip": "Restore the safe default settings, including overlay off at startup and through-wall rendering off.",
