@@ -17,6 +17,7 @@ public final class WaterSourceConfigScreen extends Screen {
     private static final int BUTTON_WIDTH = 210;
     private static final int BUTTON_HEIGHT = 20;
     private static final int ROW_GAP = 24;
+    private static final int COLOR_GAP = 6;
 
     private final Screen parent;
 
@@ -45,20 +46,22 @@ public final class WaterSourceConfigScreen extends Screen {
         addInteger(right, top + ROW_GAP * 2, "chunk_radius", config.getChunkRadius(),
                 integerValues(WaterSourceConfig.MIN_RADIUS, WaterSourceConfig.MAX_RADIUS),
                 value -> WaterSourceModClient.updateConfig(c -> c.setChunkRadius(value)));
-        addColor(right, top + ROW_GAP * 3, "source_color", config.getSourceColor(),
+        int colorY = top + ROW_GAP * 3;
+        int colorWidth = Math.max(1, Math.min(BUTTON_WIDTH, (width - right - 8 - COLOR_GAP) / 2));
+        addColor(right, colorY, colorWidth, "source_color", config.getSourceColor(),
                 new Integer[]{0xFFD21F, 0xFFF4F7FF, 0xFF8A00},
                 value -> WaterSourceModClient.updateConfig(c -> c.setSourceColor(value)));
-        addColor(right, top + ROW_GAP * 4, "flowing_color", config.getFlowingColor(),
+        addColor(right + colorWidth + COLOR_GAP, colorY, colorWidth, "flowing_color", config.getFlowingColor(),
                 new Integer[]{0x00D9FF, 0x35FF9A, 0xB56CFF},
                 value -> WaterSourceModClient.updateConfig(c -> c.setFlowingColor(value)));
-        addSlider(right, top + ROW_GAP * 5, "opacity", config.getOpacityPercent(), 10, 100,
+        addSlider(right, top + ROW_GAP * 4, "opacity", config.getOpacityPercent(), 10, 100,
                 value -> WaterSourceModClient.updateConfig(c -> c.setOpacityPercent(value)));
-        addSlider(right, top + ROW_GAP * 6, "outline_thickness", config.getOutlineThickness(), 1, 6,
+        addSlider(right, top + ROW_GAP * 5, "outline_thickness", config.getOutlineThickness(), 1, 6,
                 value -> WaterSourceModClient.updateConfig(c -> c.setOutlineThickness(value)));
-        addSlider(right, top + ROW_GAP * 7, "max_markers", config.getMaxMarkers(), 512, 16_384,
+        addSlider(right, top + ROW_GAP * 6, "max_markers", config.getMaxMarkers(), 512, 16_384,
                 value -> WaterSourceModClient.updateConfig(c -> c.setMaxMarkers(value)));
 
-        int footerY = Math.max(height - 30, top + ROW_GAP * 8 + 4);
+        int footerY = Math.max(height - 30, top + ROW_GAP * 7 + 4);
         addRenderableWidget(Button.builder(
                         Component.translatable("watersourcemod.config.reset"),
                         button -> {
@@ -96,11 +99,12 @@ public final class WaterSourceConfigScreen extends Screen {
         addRenderableWidget(button);
     }
 
-    private void addColor(int x, int y, String key, int current, Integer[] values, java.util.function.Consumer<Integer> update) {
+    private void addColor(int x, int y, int width, String key, int current, Integer[] values,
+                          java.util.function.Consumer<Integer> update) {
         CycleButton<Integer> button = CycleButton
                 .<Integer>builder(value -> Component.literal(String.format("#%06X", value & 0xFFFFFF)), current)
                 .withValues(Arrays.asList(values))
-                .create(x, y, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable("watersourcemod.config." + key),
+                .create(x, y, width, BUTTON_HEIGHT, Component.translatable("watersourcemod.config." + key),
                         (ignored, value) -> update.accept(value));
         button.setTooltip(Tooltip.create(Component.translatable("watersourcemod.config." + key + ".tooltip")));
         addRenderableWidget(button);
