@@ -14,18 +14,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class WaterSourceTranslationTest {
     @Test
-    void opacitySliderCaptionRendersAVisiblePercentSign() throws Exception {
-        assertEquals("Opacity: 75%", render("watersourcemod.config.opacity.value", 75));
+    void opacitySliderValueRendersAVisiblePercentSign() throws Exception {
+        assertEquals("75%", render("watersourcemod.config.opacity.value", 75));
     }
 
     @Test
-    void outlineThicknessSliderCaptionRendersItsValue() throws Exception {
-        assertEquals("Outline thickness: 3", render("watersourcemod.config.outline_thickness.value", 3));
+    void outlineThicknessSliderValueRendersItsNumber() throws Exception {
+        assertEquals("3", render("watersourcemod.config.outline_thickness.value", 3));
     }
 
     @Test
-    void markerLimitSliderCaptionRendersItsValue() throws Exception {
-        assertEquals("Marker limit: 2048", render("watersourcemod.config.max_markers.value", 2048));
+    void markerLimitSliderValueRendersItsNumber() throws Exception {
+        assertEquals("2048", render("watersourcemod.config.max_markers.value", 2048));
     }
 
     private String render(String key, Object value) throws Exception {

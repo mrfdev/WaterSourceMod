@@ -1,6 +1,5 @@
 package com.mrfdev.watersourcemod;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.OptionInstance;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -8,6 +7,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 
 import java.util.Arrays;
@@ -20,6 +20,10 @@ public final class WaterSourceConfigScreen extends Screen {
     private static final int ROW_GAP = 24;
     private static final int PAIR_GAP = 6;
     private static final int PAIRED_BUTTON_WIDTH = (BUTTON_WIDTH - PAIR_GAP) / 2;
+    private static final int KEY_COLOR = 0xD8D8D8;
+    private static final int VALUE_COLOR = 0xFFFFFF;
+    private static final int ENABLED_COLOR = 0x55FF55;
+    private static final int DISABLED_COLOR = 0xFF7777;
 
     private final Screen parent;
     private CycleButton<Integer> sourceColorButton;
@@ -92,10 +96,10 @@ public final class WaterSourceConfigScreen extends Screen {
     private void addBoolean(int x, int y, int width, String key, boolean current,
                             java.util.function.Consumer<Boolean> update) {
         CycleButton<Boolean> button = CycleButton.booleanBuilder(
-                        Component.literal("ON").withStyle(ChatFormatting.GREEN),
-                        Component.literal("OFF").withStyle(ChatFormatting.RED),
+                        stateValue(true),
+                        stateValue(false),
                         current)
-                .create(x, y, width, BUTTON_HEIGHT, Component.translatable("watersourcemod.config." + key),
+                .create(x, y, width, BUTTON_HEIGHT, optionName(key),
                         (ignored, value) -> update.accept(value));
         button.setTooltip(Tooltip.create(Component.translatable("watersourcemod.config." + key + ".tooltip")));
         addRenderableWidget(button);
@@ -104,9 +108,11 @@ public final class WaterSourceConfigScreen extends Screen {
     private void addMarkerStyle(int x, int y, WaterSourceConfig config) {
         List<WaterSourceConfig.MarkerStyle> styles = Arrays.asList(WaterSourceConfig.MarkerStyle.values());
         CycleButton<WaterSourceConfig.MarkerStyle> button = CycleButton
-                .<WaterSourceConfig.MarkerStyle>builder(style -> Component.translatable("watersourcemod.style." + style.key()), config.getMarkerStyle())
+                .<WaterSourceConfig.MarkerStyle>builder(
+                        style -> Component.translatable("watersourcemod.style." + style.key()).withColor(VALUE_COLOR),
+                        config.getMarkerStyle())
                 .withValues(styles)
-                .create(x, y, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable("watersourcemod.config.marker_style"),
+                .create(x, y, BUTTON_WIDTH, BUTTON_HEIGHT, optionName("marker_style"),
                         (ignored, value) -> WaterSourceModClient.updateConfig(c -> c.setMarkerStyle(value)));
         button.setTooltip(Tooltip.create(Component.translatable("watersourcemod.config.marker_style.tooltip")));
         addRenderableWidget(button);
@@ -115,9 +121,11 @@ public final class WaterSourceConfigScreen extends Screen {
     private CycleButton<Integer> addColor(int x, int y, int width, String key, int current, Integer[] values,
                                           java.util.function.Consumer<Integer> update) {
         CycleButton<Integer> button = CycleButton
-                .<Integer>builder(value -> Component.literal(String.format("#%06X", value & 0xFFFFFF)), current)
+                .<Integer>builder(
+                        value -> Component.literal(String.format("#%06X", value & 0xFFFFFF)).withColor(VALUE_COLOR),
+                        current)
                 .withValues(Arrays.asList(values))
-                .create(x, y, width, BUTTON_HEIGHT, Component.translatable("watersourcemod.config." + key),
+                .create(x, y, width, BUTTON_HEIGHT, optionName(key),
                         (ignored, value) -> update.accept(value));
         button.setTooltip(Tooltip.create(Component.translatable("watersourcemod.config." + key + ".tooltip")));
         addRenderableWidget(button);
@@ -126,9 +134,9 @@ public final class WaterSourceConfigScreen extends Screen {
 
     private void addInteger(int x, int y, String key, int current, List<Integer> values, java.util.function.Consumer<Integer> update) {
         CycleButton<Integer> button = CycleButton
-                .<Integer>builder(value -> Component.literal(Integer.toString(value)), current)
+                .<Integer>builder(value -> Component.literal(Integer.toString(value)).withColor(VALUE_COLOR), current)
                 .withValues(values)
-                .create(x, y, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable("watersourcemod.config." + key),
+                .create(x, y, BUTTON_WIDTH, BUTTON_HEIGHT, optionName(key),
                         (ignored, value) -> update.accept(value));
         button.setTooltip(Tooltip.create(Component.translatable("watersourcemod.config." + key + ".tooltip")));
         addRenderableWidget(button);
@@ -140,12 +148,23 @@ public final class WaterSourceConfigScreen extends Screen {
         OptionInstance<Integer> option = new OptionInstance<Integer>(
                 translationKey,
                 OptionInstance.cachedConstantTooltip(Component.translatable(translationKey + ".tooltip")),
-                (caption, value) -> Component.translatable(translationKey + ".value", value),
+                (caption, value) -> CommonComponents.optionNameValue(
+                        Component.translatable(translationKey).withColor(KEY_COLOR),
+                        Component.translatable(translationKey + ".value", value).withColor(VALUE_COLOR)),
                 new OptionInstance.IntRange(min, max),
                 current,
                 update);
         AbstractWidget slider = option.createButton(minecraft.options, x, y, BUTTON_WIDTH);
         addRenderableWidget(slider);
+    }
+
+    private static Component optionName(String key) {
+        return Component.translatable("watersourcemod.config." + key).withColor(KEY_COLOR);
+    }
+
+    private static Component stateValue(boolean enabled) {
+        return Component.literal(enabled ? "ON" : "OFF")
+                .withColor(enabled ? ENABLED_COLOR : DISABLED_COLOR);
     }
 
     private static List<Integer> integerValues(int min, int max) {
