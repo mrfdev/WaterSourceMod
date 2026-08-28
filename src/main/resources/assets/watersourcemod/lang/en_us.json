@@ -31,6 +31,7 @@
   "watersourcemod.config.opacity.value": "Opacity: %1$s%%",
   "watersourcemod.config.opacity.tooltip": "Slide left to right to control marker transparency. Higher values are easier to see but more visually prominent.",
   "watersourcemod.config.outline_thickness": "Outline thickness",
+  "watersourcemod.config.outline_thickness.value": "Outline thickness: %1$s",
   "watersourcemod.config.outline_thickness.tooltip": "Controls the dark contrast border around each marker.",
   "watersourcemod.config.max_markers": "Marker limit",
   "watersourcemod.config.max_markers.tooltip": "Maximum markers retained per scan. Sources are kept before flowing markers when the limit is reached.",

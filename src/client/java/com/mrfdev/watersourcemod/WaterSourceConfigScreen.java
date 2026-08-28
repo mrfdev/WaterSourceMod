@@ -51,9 +51,9 @@ public final class WaterSourceConfigScreen extends Screen {
         addColor(right, top + ROW_GAP * 4, "flowing_color", config.getFlowingColor(),
                 new Integer[]{0x00D9FF, 0x35FF9A, 0xB56CFF},
                 value -> WaterSourceModClient.updateConfig(c -> c.setFlowingColor(value)));
-        addOpacitySlider(right, top + ROW_GAP * 5, config.getOpacityPercent());
-        addInteger(right, top + ROW_GAP * 6, "outline_thickness", config.getOutlineThickness(),
-                integerValues(1, 6),
+        addSlider(right, top + ROW_GAP * 5, "opacity", config.getOpacityPercent(), 10, 100,
+                value -> WaterSourceModClient.updateConfig(c -> c.setOpacityPercent(value)));
+        addSlider(right, top + ROW_GAP * 6, "outline_thickness", config.getOutlineThickness(), 1, 6,
                 value -> WaterSourceModClient.updateConfig(c -> c.setOutlineThickness(value)));
         addInteger(right, top + ROW_GAP * 7, "max_markers", config.getMaxMarkers(),
                 Arrays.asList(512, 1024, 2048, 4096, 8192, 16384),
@@ -117,15 +117,17 @@ public final class WaterSourceConfigScreen extends Screen {
         addRenderableWidget(button);
     }
 
-    private void addOpacitySlider(int x, int y, int current) {
-        OptionInstance<Integer> opacity = new OptionInstance<>(
-                "watersourcemod.config.opacity",
-                OptionInstance.cachedConstantTooltip(Component.translatable("watersourcemod.config.opacity.tooltip")),
-                (caption, value) -> Component.translatable("watersourcemod.config.opacity.value", value),
-                new OptionInstance.IntRange(10, 100),
+    private void addSlider(int x, int y, String key, int current, int min, int max,
+                           OptionInstance.ValueUpdateListener<Integer> update) {
+        String translationKey = "watersourcemod.config." + key;
+        OptionInstance<Integer> option = new OptionInstance<Integer>(
+                translationKey,
+                OptionInstance.cachedConstantTooltip(Component.translatable(translationKey + ".tooltip")),
+                (caption, value) -> Component.translatable(translationKey + ".value", value),
+                new OptionInstance.IntRange(min, max),
                 current,
-                value -> WaterSourceModClient.updateConfig(c -> c.setOpacityPercent(value)));
-        AbstractWidget slider = opacity.createButton(minecraft.options, x, y, BUTTON_WIDTH);
+                update);
+        AbstractWidget slider = option.createButton(minecraft.options, x, y, BUTTON_WIDTH);
         addRenderableWidget(slider);
     }
 

@@ -1,5 +1,6 @@
 package com.mrfdev.watersourcemod;
 
+import com.google.gson.JsonParser;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import org.junit.jupiter.api.Test;
 
@@ -9,13 +10,20 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.Optional;
 
-import com.google.gson.JsonParser;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class WaterSourceTranslationTest {
     @Test
     void opacitySliderCaptionRendersAVisiblePercentSign() throws Exception {
+        assertEquals("Opacity: 75%", render("watersourcemod.config.opacity.value", 75));
+    }
+
+    @Test
+    void outlineThicknessSliderCaptionRendersItsValue() throws Exception {
+        assertEquals("Outline thickness: 3", render("watersourcemod.config.outline_thickness.value", 3));
+    }
+
+    private String render(String key, Object value) throws Exception {
         String template;
         try (Reader reader = new InputStreamReader(
                 Objects.requireNonNull(getClass().getResourceAsStream(
@@ -23,21 +31,21 @@ class WaterSourceTranslationTest {
                 StandardCharsets.UTF_8)) {
             template = JsonParser.parseReader(reader)
                     .getAsJsonObject()
-                    .get("watersourcemod.config.opacity.value")
+                    .get(key)
                     .getAsString();
         }
 
         StringBuilder rendered = new StringBuilder();
         TranslatableContents contents = new TranslatableContents(
-                "watersourcemod.config.opacity.value",
+                key,
                 template,
-                new Object[]{75});
+                new Object[]{value});
 
         contents.visit(text -> {
             rendered.append(text);
             return Optional.empty();
         });
 
-        assertEquals("Opacity: 75%", rendered.toString());
+        return rendered.toString();
     }
 }

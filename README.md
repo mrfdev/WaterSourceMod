@@ -18,8 +18,8 @@ License: MIT
   in every direction, or 3x3 chunks.
 - Configure a larger radius, including radius 2 for 5x5 chunks.
 - Use distinct high-contrast source and flowing-water marker colors.
-- Choose a marker style, slider-controlled opacity, outline thickness, pulse animation, and
-  optional HUD labels/legend.
+- Choose a marker style, slider-controlled opacity and outline thickness, pulse
+  animation, and optional HUD labels/legend.
 - Keep the optional status HUD at the top center so it avoids common corner overlays.
 - Include or exclude waterlogged source blocks.
 - Scan incrementally, only in client-loaded chunks, across the full loaded
@@ -58,6 +58,8 @@ The defaults are intentionally conservative:
 | Through walls | Off | Disable depth-aware rendering only when server rules allow it; tooltip includes `#fairplay` |
 | Labels | Off | Show the optional source/flowing legend in the HUD |
 | Pulse | On | Gently animate marker emphasis |
+| Opacity | 82% | Slide left or right to control marker transparency |
+| Outline thickness | 2 | Slide left or right to control marker border thickness, from 1 to 6 |
 
 All visible settings include explanatory tooltips. Minecraft's Controls menu
 can change the key bindings. The built-in screen is available without Mod
