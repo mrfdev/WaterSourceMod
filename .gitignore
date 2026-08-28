@@ -3,6 +3,7 @@
 build/
 out/
 run/
+logs/
 
 # Local release artifacts. JARs are intentionally never committed.
 *.jar

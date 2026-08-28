@@ -28,7 +28,7 @@
   "watersourcemod.config.flowing_color": "Flowing color",
   "watersourcemod.config.flowing_color.tooltip": "High-contrast color used for non-source flowing-water markers.",
   "watersourcemod.config.opacity": "Opacity",
-  "watersourcemod.config.opacity.value": "Opacity: %1$s%",
+  "watersourcemod.config.opacity.value": "Opacity: %1$s%%",
   "watersourcemod.config.opacity.tooltip": "Slide left to right to control marker transparency. Higher values are easier to see but more visually prominent.",
   "watersourcemod.config.outline_thickness": "Outline thickness",
   "watersourcemod.config.outline_thickness.tooltip": "Controls the dark contrast border around each marker.",
