@@ -1,5 +1,6 @@
 package com.mrfdev.watersourcemod;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.OptionInstance;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -80,8 +81,8 @@ public final class WaterSourceConfigScreen extends Screen {
 
     private void addBoolean(int x, int y, String key, boolean current, java.util.function.Consumer<Boolean> update) {
         CycleButton<Boolean> button = CycleButton.booleanBuilder(
-                        Component.translatable("options.on"),
-                        Component.translatable("options.off"),
+                        Component.literal("ON").withStyle(ChatFormatting.GREEN),
+                        Component.literal("OFF").withStyle(ChatFormatting.RED),
                         current)
                 .create(x, y, BUTTON_WIDTH, BUTTON_HEIGHT, Component.translatable("watersourcemod.config." + key), (ignored, value) -> update.accept(value));
         button.setTooltip(Tooltip.create(Component.translatable("watersourcemod.config." + key + ".tooltip")));
