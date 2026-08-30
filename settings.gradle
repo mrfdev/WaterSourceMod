@@ -1,7 +1,17 @@
 pluginManagement {
     repositories {
-        maven { url = uri("https://maven.fabricmc.net/") }
-        maven { url = uri("https://maven.terraformersmc.com/releases/") }
+        exclusiveContent {
+            forRepository {
+                maven {
+                    name = "Fabric"
+                    url = uri("https://maven.fabricmc.net/")
+                }
+            }
+            filter {
+                includeGroup("net.fabricmc")
+                includeGroupByRegex('net\\.fabricmc\\..*')
+            }
+        }
         gradlePluginPortal()
     }
 }

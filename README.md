@@ -18,21 +18,46 @@ user-tested and confirmed working on Minecraft 26.2 on August 28, 2026.
 [Beta 1 release notes](docs/releases/v1.0.0-beta.1.md) ·
 [Changelog](CHANGELOG.md)
 
+The repository currently contains unreleased Beta 2 reliability, performance,
+settings, visualization, and accessibility work. Beta 1 remains the latest
+published and user-tested JAR.
+
 ## Features
 
 - Toggle the visualization with `F9` (rebindable in Minecraft Controls).
+- Optionally show it only while holding `F8`, without giving up the normal
+  toggle behavior.
 - Force a fresh scan with `Shift+F9` (also rebindable through the two key
   mappings).
-- Default scan radius is 1 chunk, covering the current chunk plus one chunk
-  in every direction, or 3x3 chunks.
-- Configure a larger radius, including radius 2 for 5x5 chunks.
-- Use distinct high-contrast source and flowing-water marker colors, with a
-  live color swatch inside each settings button.
+- Choose current-chunk, nearby 3x3, nearby 5x5, or custom scan radii, plus a
+  current-Y, nearby-height, or full-build-height vertical range.
+- Refresh automatically, after debounced client block updates, or only when
+  manually requested. Incremental work obeys both block and millisecond budgets.
+- Use separate discovery and per-frame visible marker limits.
+- Use an RGB color picker, a saved custom palette, and default,
+  color-blind-safe, high-contrast, or monochrome presets.
 - Distinguish muted setting labels from bright values using the same visual
   language as 1MB Locator HUD, including green `ON` and red `OFF` states.
-- Choose a marker style, slider-controlled opacity and outline thickness, pulse
-  animation, and optional HUD labels/legend.
-- Keep the optional status HUD at the top center so it avoids common corner overlays.
+- Choose independent source, flowing, and waterlogged shapes, including box,
+  pillar, beacon, hollow, stripe, and dot patterns, so marker meaning never
+  depends on color alone.
+- Add a cap or cross to waterlogged markers and represent flowing-water depth
+  through marker height, a surface gauge, both cues, or a fixed shape.
+- Optionally highlight the nearest eligible marker in the world and show its
+  distance, compass direction, and vertical offset in the HUD.
+- Optionally draw the current chunk or the complete scan area. Loaded chunks
+  use solid frames while skipped or pending chunks use dashed frames; this
+  visualization never requests a chunk.
+- Configure opacity, outline thickness and color, pulse animation, maximum
+  render distance, and distance fade.
+- Anchor, offset, scale, adjust the background, or compact the optional status
+  HUD. It reports visible and discovered markers, skipped chunks, and whether
+  a retained snapshot is stale during a refresh.
+- Opt into narrator scan-completion and discovery-limit messages, or a
+  diagnostic HUD with scan timing, processed blocks, discarded markers, and
+  emitted render vertices.
+- Apply local accessibility, exploration, and low-performance profiles.
+- Import or export a validated settings copy inside the normal client config directory.
 - Include or exclude waterlogged source blocks.
 - Scan incrementally, only in client-loaded chunks, across the full loaded
   vertical build range.
@@ -62,19 +87,36 @@ The defaults are intentionally conservative:
 | Setting | Default | Purpose |
 | --- | --- | --- |
 | Toggle overlay | `F9` | Show or hide the overlay |
+| Temporary show | `F8`, opt-in | Show the overlay only while the key is held |
 | Rescan | `Shift+F9` | Restart the loaded-chunk scan immediately |
 | Open settings | `F10` | Open the built-in settings screen |
 | Chunk radius | `1` | Scan a 3x3 chunk area around the player |
+| Vertical range | Full height | Scan the full build height; current Y and nearby bands are available |
+| Refresh mode | Automatic | Refresh every 4 seconds; block-update and manual-only modes are available |
+| Hard scan budget | 12,000 blocks/tick | Bound scan work even on very fast clients |
+| Adaptive time budget | 3 ms/tick | Stop incremental work early to protect frame time |
 | Show sources | On | Mark source water |
 | Show flowing water | On | Mark non-source water |
 | Include waterlogged sources | On | Include source fluid inside waterlogged blocks |
 | Through walls | Off | Disable depth-aware rendering only when server rules allow it; tooltip includes `#fairplay` |
 | Labels | Off | Show the optional source/flowing legend in the HUD |
 | Pulse | On | Gently animate marker emphasis |
+| Source / flowing / waterlogged shapes | Box / pillar / beacon | Keep the three categories visually distinct without color |
+| Waterlogged cue | Top cap | Add a redundant shape cue above waterlogged markers |
+| Flowing-water level | Marker height | Represent the client-observed fluid level; surface gauge and combined modes are available |
+| Nearest marker | Off | Optionally add HUD direction/distance, a world highlight, or both |
+| Scan boundary | Off | Optionally frame the current chunk or loaded, skipped, and pending scan chunks without requesting them |
+| Palette | Default | Select presets or edit and retain a custom RGB palette |
 | Opacity | 82% | Slide left or right to control marker transparency |
 | Outline thickness | 2 | Slide left or right to control marker border thickness, from 1 to 6 |
-| Marker limit | 4096 | Slide left or right to retain between 512 and 16,384 markers per scan |
+| Render distance / fade | 192 blocks / 75% | Bound marker rendering and fade toward the configured limit |
+| Discovery limit | 4096 | Retain between 512 and 16,384 markers per completed scan |
+| Visible limit | 4096 | Draw an independently bounded subset per frame |
+| HUD | Top center, 100% | Configure anchor, offsets, scale, background opacity, and compact mode; compact mode includes visible/found/skipped/stale state |
+| Narration / diagnostics | Off / Off | Opt into scan-completion narration or detailed local performance counters |
+| Local profile | Custom defaults | Apply accessibility, exploration, or low-performance presets |
 
+The built-in screen separates Scanning, Markers, Features, HUD, and Profiles.
 All visible settings include explanatory tooltips. Minecraft's Controls menu
 can change the key bindings. The built-in screen is available without Mod
 Menu; when Mod Menu is present, its config button opens the same screen.
@@ -82,7 +124,15 @@ Menu; when Mod Menu is present, its config button opens the same screen.
 The JSON fallback is stored in the normal client config directory as
 `config/water-source-mod.json`. JSON is intentionally simple and has no
 comments; the in-game tooltips and this README are the explanations for each
-setting.
+setting. If the file is malformed, the mod logs a concise warning, moves the
+original alongside it as `water-source-mod.json.invalid-<unique>.bak`, and
+starts with safe defaults.
+
+Beta 1 configuration version 1 is migrated explicitly to version 2. Its single
+marker shape is copied to all three category shapes and its marker limit is
+copied to both new limits, preserving the existing appearance. The Profiles
+page exports and imports `config/water-source-mod-export.json`; malformed
+imports are rejected without moving or changing that file.
 
 ## Installation
 

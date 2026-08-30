@@ -11,8 +11,34 @@ base {
 }
 
 repositories {
-    maven { url = "https://maven.fabricmc.net/" }
-    maven { url = "https://maven.terraformersmc.com/releases/" }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Fabric"
+                url = uri("https://maven.fabricmc.net/")
+            }
+        }
+        filter {
+            includeGroup("net.fabricmc")
+            includeGroupByRegex('net\\.fabricmc\\..*')
+        }
+    }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "TerraformersMC"
+                url = uri("https://maven.terraformersmc.com/releases/")
+            }
+        }
+        filter {
+            includeGroup("com.terraformersmc")
+        }
+    }
+    mavenCentral()
+}
+
+dependencyLocking {
+    lockAllConfigurations()
 }
 
 loom {
@@ -41,12 +67,15 @@ dependencies {
     testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 }
 
+def resourceVersion = project.version
+def resourceBuildNumber = build_number
+
 processResources {
-    inputs.property "version", project.version
-    inputs.property "build_number", build_number
+    inputs.property "version", resourceVersion
+    inputs.property "build_number", resourceBuildNumber
 
     filesMatching("fabric.mod.json") {
-        expand "version": project.version, "build_number": build_number
+        expand "version": resourceVersion, "build_number": resourceBuildNumber
     }
 }
 
